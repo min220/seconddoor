@@ -1,0 +1,153 @@
+{
+  "name": "ClientProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Associated user ID"
+    },
+    "household_size": {
+      "type": "number",
+      "description": "Number of people in household"
+    },
+    "monthly_income": {
+      "type": "number",
+      "description": "Monthly household income"
+    },
+    "employment_type": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "self_employed",
+        "unemployed",
+        "disability",
+        "retirement",
+        "other"
+      ],
+      "description": "Employment status"
+    },
+    "has_eviction_history": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has eviction history"
+    },
+    "eviction_details": {
+      "type": "string",
+      "description": "Details about eviction history"
+    },
+    "credit_score_range": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "fair",
+        "poor",
+        "no_credit",
+        "unknown"
+      ],
+      "description": "Credit score range"
+    },
+    "has_criminal_background": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has criminal background"
+    },
+    "criminal_background_details": {
+      "type": "string",
+      "description": "Details about criminal background"
+    },
+    "has_pets": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has pets"
+    },
+    "pet_details": {
+      "type": "string",
+      "description": "Pet information"
+    },
+    "preferred_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Preferred neighborhoods/areas"
+    },
+    "max_rent": {
+      "type": "number",
+      "description": "Maximum rent budget"
+    },
+    "move_in_timeline": {
+      "type": "string",
+      "enum": [
+        "immediate",
+        "1_month",
+        "2_months",
+        "3_months",
+        "flexible"
+      ],
+      "description": "When they need to move in"
+    },
+    "additional_notes": {
+      "type": "string",
+      "description": "Additional information or special circumstances"
+    }
+  },
+  "required": [
+    "user_id",
+    "household_size",
+    "employment_type",
+    "max_rent",
+    "move_in_timeline"
+  ],
+  "x-base44-security": {
+    "read": {
+      "or": [
+        {
+          "role": {
+            "in": [
+              "admin",
+              "broker"
+            ]
+          }
+        },
+        {
+          "user_id": {
+            "eq": "{{user.id}}"
+          }
+        }
+      ]
+    },
+    "create": {
+      "role": {
+        "in": [
+          "admin",
+          "user"
+        ]
+      }
+    },
+    "update": {
+      "or": [
+        {
+          "role": {
+            "in": [
+              "admin"
+            ]
+          }
+        },
+        {
+          "user_id": {
+            "eq": "{{user.id}}"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "role": {
+        "in": [
+          "admin"
+        ]
+      }
+    }
+  }
+}

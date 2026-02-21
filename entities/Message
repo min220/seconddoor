@@ -1,0 +1,48 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "sender_id": {
+      "type": "string",
+      "description": "ID of message sender"
+    },
+    "recipient_id": {
+      "type": "string",
+      "description": "ID of message recipient"
+    },
+    "property_id": {
+      "type": "string",
+      "description": "Related property ID (optional)"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Message subject"
+    },
+    "content": {
+      "type": "string",
+      "description": "Message content"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether message has been read"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "inquiry",
+        "response",
+        "application",
+        "update",
+        "general"
+      ],
+      "default": "general",
+      "description": "Type of message"
+    }
+  },
+  "required": [
+    "sender_id",
+    "recipient_id",
+    "content"
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "name": "Property",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Property title/name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the property"
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City name"
+    },
+    "state": {
+      "type": "string",
+      "description": "State abbreviation"
+    },
+    "zip_code": {
+      "type": "string",
+      "description": "ZIP/postal code"
+    },
+    "bedrooms": {
+      "type": "integer",
+      "description": "Number of bedrooms"
+    },
+    "bathrooms": {
+      "type": "number",
+      "description": "Number of bathrooms (can be fractional like 1.5)"
+    },
+    "square_feet": {
+      "type": "integer",
+      "description": "Total square footage"
+    },
+    "rent": {
+      "type": "number",
+      "description": "Monthly rent amount"
+    },
+    "security_deposit": {
+      "type": "number",
+      "description": "Security deposit amount"
+    },
+    "broker_id": {
+      "type": "string",
+      "description": "ID of the broker managing this property"
+    },
+    "property_type": {
+      "type": "string",
+      "enum": [
+        "apartment",
+        "house",
+        "condo",
+        "townhouse",
+        "studio",
+        "duplex"
+      ],
+      "default": "apartment",
+      "description": "Type of property"
+    },
+    "amenities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of available amenities"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "description": "URLs of property images"
+    },
+    "accepts_evictions": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this property accepts tenants with eviction history"
+    },
+    "accepts_poor_credit": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this property accepts tenants with poor credit"
+    },
+    "accepts_criminal_background": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this property accepts tenants with criminal background"
+    },
+    "flexible_criteria": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this property has flexible qualification criteria"
+    },
+    "minimum_income_multiplier": {
+      "type": "number",
+      "default": 3.0,
+      "description": "Required income as multiple of rent (e.g., 3.0 means 3x rent)"
+    },
+    "available_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when property becomes available"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this property listing is currently active"
+    }
+  },
+  "required": [
+    "title",
+    "address",
+    "city",
+    "state",
+    "rent",
+    "broker_id"
+  ]
+}

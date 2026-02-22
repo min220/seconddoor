@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Property, Broker } from "@/entities/all";
+import { Property, Broker } from "@/mock/base44";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

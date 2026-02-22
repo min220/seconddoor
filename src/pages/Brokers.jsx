@@ -1,25 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Broker } from "@/entities/all";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
-import { 
-  Search, 
-  MapPin, 
-  Star, 
-  Shield, 
-  Filter,
-  ArrowRight,
-  Users
-} from "lucide-react";
+import { Search, Users } from "lucide-react";
 
 import BrokerFilters from "../components/brokers/BrokerFilters";
 import BrokerCard from "../components/brokers/BrokerCard";
 import BrokerDetails from "../components/brokers/BrokerDetails";
+
+const MOCK_BROKERS = [
+  {
+    id: "b1",
+    name: "Jordan Lee",
+    company: "NYC Second Chance Realty",
+    phone: "555-123-4567",
+    email: "jordan@example.com",
+    bio: "Specializes in rentals with flexible criteria.",
+    specializations: ["poor_credit", "no_credit", "self_employed"],
+    areas_served: ["Manhattan", "Brooklyn", "Queens"],
+    years_experience: 6,
+    success_rate: 78,
+    profile_image: "",
+    rating: 4.6,
+    review_count: 42,
+    is_verified: true,
+  },
+  {
+    id: "b2",
+    name: "Sam Patel",
+    company: "Bridge Apartments",
+    phone: "555-987-6543",
+    email: "sam@example.com",
+    bio: "Works with Section 8 and first-time renters.",
+    specializations: ["section_8", "first_time_renters"],
+    areas_served: ["Bronx", "Queens"],
+    years_experience: 4,
+    success_rate: 70,
+    profile_image: "",
+    rating: 4.2,
+    review_count: 18,
+    is_verified: false,
+  },
+];
 
 export default function BrokersPage() {
   const [brokers, setBrokers] = useState([]);
@@ -31,29 +54,14 @@ export default function BrokersPage() {
     location: "",
     specializations: [],
     minRating: "",
-    isVerified: false
+    isVerified: false,
   });
-
-  useEffect(() => {
-    loadBrokers();
-    
-    // Check if there's a specific broker ID in URL params
-    const urlParams = new URLSearchParams(window.location.search);
-    const brokerId = urlParams.get('id');
-    if (brokerId) {
-      loadBrokerDetails(brokerId);
-    }
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [brokers, searchQuery, filters]);
 
   const loadBrokers = async () => {
     setIsLoading(true);
     try {
-      const data = await Broker.list('-rating', 50);
-      setBrokers(data);
+      // TEMP: local mock data until a backend exists
+      setBrokers(MOCK_BROKERS);
     } catch (error) {
       console.error("Error loading brokers:", error);
     }
@@ -62,10 +70,8 @@ export default function BrokersPage() {
 
   const loadBrokerDetails = async (brokerId) => {
     try {
-      const brokers = await Broker.filter({ id: brokerId });
-      if (brokers.length > 0) {
-        setSelectedBroker(brokers[0]);
-      }
+      const found = MOCK_BROKERS.find((b) => b.id === brokerId);
+      if (found) setSelectedBroker(found);
     } catch (error) {
       console.error("Error loading broker details:", error);
     }
@@ -74,54 +80,57 @@ export default function BrokersPage() {
   const applyFilters = () => {
     let filtered = brokers;
 
-    // Search query
     if (searchQuery) {
-      filtered = filtered.filter(broker => 
-        broker.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        broker.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        broker.specializations?.some(spec => 
-          spec.toLowerCase().includes(searchQuery.toLowerCase())
-        )
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (broker) =>
+          broker.name?.toLowerCase().includes(q) ||
+          broker.company?.toLowerCase().includes(q) ||
+          broker.specializations?.some((spec) => spec.toLowerCase().includes(q))
       );
     }
 
-    // Location filter
     if (filters.location) {
-      filtered = filtered.filter(broker =>
-        broker.areas_served?.some(area =>
-          area.toLowerCase().includes(filters.location.toLowerCase())
-        )
+      const loc = filters.location.toLowerCase();
+      filtered = filtered.filter((broker) =>
+        broker.areas_served?.some((area) => area.toLowerCase().includes(loc))
       );
     }
 
-    // Specializations filter
     if (filters.specializations.length > 0) {
-      filtered = filtered.filter(broker =>
-        filters.specializations.some(spec =>
-          broker.specializations?.includes(spec)
-        )
+      filtered = filtered.filter((broker) =>
+        filters.specializations.some((spec) => broker.specializations?.includes(spec))
       );
     }
 
-    // Rating filter
     if (filters.minRating) {
-      filtered = filtered.filter(broker => 
-        (broker.rating || 0) >= parseFloat(filters.minRating)
-      );
+      const min = Number.parseFloat(filters.minRating);
+      filtered = filtered.filter((broker) => (broker.rating || 0) >= min);
     }
 
-    // Verified filter
     if (filters.isVerified) {
-      filtered = filtered.filter(broker => broker.is_verified);
+      filtered = filtered.filter((broker) => broker.is_verified);
     }
 
     setFilteredBrokers(filtered);
   };
 
+  useEffect(() => {
+    loadBrokers();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const brokerId = urlParams.get("id");
+    if (brokerId) loadBrokerDetails(brokerId);
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [brokers, searchQuery, filters]);
+
   if (selectedBroker) {
     return (
-      <BrokerDetails 
-        broker={selectedBroker} 
+      <BrokerDetails
+        broker={selectedBroker}
         onBack={() => setSelectedBroker(null)}
       />
     );
@@ -129,7 +138,6 @@ export default function BrokersPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900 mb-2">
           Find Specialized Brokers
@@ -139,7 +147,6 @@ export default function BrokersPage() {
         </p>
       </div>
 
-      {/* Search Bar */}
       <div className="mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
@@ -153,12 +160,10 @@ export default function BrokersPage() {
       </div>
 
       <div className="grid lg:grid-cols-4 gap-8">
-        {/* Filters Sidebar */}
         <div className="lg:col-span-1">
           <BrokerFilters filters={filters} onFiltersChange={setFilters} />
         </div>
 
-        {/* Brokers Grid */}
         <div className="lg:col-span-3">
           <div className="mb-6 flex items-center justify-between">
             <p className="text-slate-600">
@@ -168,14 +173,16 @@ export default function BrokersPage() {
 
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array(6).fill(0).map((_, i) => (
-                <Card key={i} className="p-6 space-y-4">
-                  <Skeleton className="h-16 w-16 rounded-full mx-auto" />
-                  <Skeleton className="h-6 w-3/4 mx-auto" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-1/2 mx-auto" />
-                </Card>
-              ))}
+              {Array(6)
+                .fill(0)
+                .map((_, i) => (
+                  <Card key={i} className="p-6 space-y-4">
+                    <Skeleton className="h-16 w-16 rounded-full mx-auto" />
+                    <Skeleton className="h-6 w-3/4 mx-auto" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-1/2 mx-auto" />
+                  </Card>
+                ))}
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -208,7 +215,7 @@ export default function BrokersPage() {
                     location: "",
                     specializations: [],
                     minRating: "",
-                    isVerified: false
+                    isVerified: false,
                   });
                 }}
               >

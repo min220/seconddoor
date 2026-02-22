@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ClientProfile, User } from "@/entities/all";
+import { ClientProfile, User } from "@/mock/base44";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

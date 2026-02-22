@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Property, Broker, User } from "@/entities/all";
-import { UploadFile, ExtractDataFromUploadedFile } from "@/integrations/Core";
+import { Property, Broker, User } from "@/mock/base44";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

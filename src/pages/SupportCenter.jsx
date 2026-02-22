@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SupportTicket } from '@/entities/SupportTicket';
+import { SupportTicket } from "@/mock/base44";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

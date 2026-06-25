@@ -1,39 +1,28 @@
-**Welcome to your Base44 project** 
+# seconddoor
 
-**About**
+Backend for a nonprofit housing platform connecting renters with unconventional backgrounds to landlords open to fair screening practices.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+## the product
 
-This project contains everything you need to run your app locally.
+SecondDoor is a nonprofit housing initiative built to open pathways for renters who get filtered out by traditional systems — people with eviction histories, nontraditional credit, or unconventional financial profiles. The platform matches them with landlords willing to screen fairly.
 
-**Edit the code in your local development environment**
+[seconddoor.org](#) — currently in development
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+## my contribution
 
-**Prerequisites:** 
+The frontend was built by the founder on Base44. I came in to build the backend and connect it to the existing frontend:
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+- Migrated the codebase off Base44 and onto Git
+- Built and structured the backend
+- Integrated the RentCast API to pull and display live rental listings in NYC
+- Synchronized the backend with the existing frontend so listings render correctly
 
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
+## stack
 
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
-```
+- Python
+- RentCast API
+- Base44 → Git migration
 
-Run the app: `npm run dev`
+## status
 
-**Publish your changes**
-
-Open [Base44.com](http://Base44.com) and click on Publish.
-
-**Docs & Support**
-
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
-
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+In development. The SecondDoor team is currently in the cold outreach phase, working with brokers and landlords in NYC.
